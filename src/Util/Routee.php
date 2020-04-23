@@ -4,37 +4,97 @@ declare(strict_types=1);
 
 namespace App\Util;
 
+use App\Exception\RouteeException;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class Routee
 {
-    private const API_URL = 'https://auth.routee.net';
-    private const DEFAULT_EXPIRATION = 3600;
+    private const AUTH_URL = 'https://auth.routee.net';
+    private const CONNECT_URL = 'https://connect.routee.net';
 
+    /**
+     * @var Client
+     */
     private $client;
-    private $token;
-    private $lastSent = 0;
-    private $expiresIn;
 
-    public function __construct()
+    /**
+     * @var string
+     */
+    private $appId;
+
+    /**
+     * @var string
+     */
+    private $appSecret;
+
+    /**
+     * @var string|null
+     */
+    private $token;
+
+    /**
+     * @param string $appId
+     * @param string $appSecret
+     */
+    public function __construct(string $appId, string $appSecret)
     {
         $this->client = new Client();
+        $this->appId = $appId;
+        $this->appSecret = $appSecret;
     }
 
-    public function auth()
+    /**
+     * @param string $message
+     * @param string $phoneNumber
+     * @param string $from
+     *
+     * @throws RouteeException
+     */
+    public function sendSMS(string $message, string $phoneNumber, string $from): void
     {
-        if (!$this->isExpired()) {
-            return;
+        $this->auth();
+
+        try {
+            $response = $this->client->post(self::CONNECT_URL.'/sms', [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$this->token,
+                ],
+                'json' => [
+                    'body' => $message,
+                    'to' => $phoneNumber,
+                    'from' => $from,
+                ],
+            ]);
+        } catch (RequestException $exception) {
+            $response = $exception->getResponse();
+            if ($response->getStatusCode() === 400) {
+                throw new RouteeException($exception->getMessage());
+            }
         }
 
-        $authToken = $this->getAuthToken();
-        $this->getAccessToken($authToken);
+        if ($response->getStatusCode() !== 200) {
+            throw new RouteeException('Failed to send SMS notification');
+        }
     }
 
-    public function getAccessToken(string $authToken)
+    /**
+     * @throws RouteeException
+     */
+    private function auth(): void
+    {
+        $authToken = $this->getAuthToken();
+        $this->initAccessToken($authToken);
+    }
+
+    /**
+     * @param string $authToken
+     * @throws RouteeException
+     */
+    private function initAccessToken(string $authToken): void
     {
         try {
-            $response = $this->client->post(self::API_URL.'/oauth/token', [
+            $response = $this->client->post(self::AUTH_URL.'/oauth/token', [
                 'body' => 'grant_type=client_credentials',
                 'headers' => [
                     'Authorization' => 'Basic '.$authToken,
@@ -42,32 +102,22 @@ class Routee
                 ],
             ]);
         } catch (\Exception $exception) {
-            var_dump($exception->getMessage());
+            throw new RouteeException('Authentication failed: '.$exception->getMessage());
         }
 
         $content = json_decode($response->getBody()->getContents(), true);
-
-        $this->expiresIn = $content['expires_in'] ?? self::DEFAULT_EXPIRATION;
         if (!isset($content['access_token'])) {
-            throw new \LogicException();
+            throw new RouteeException('Authentication failed: unknown reasons');
         }
+
+        $this->token = $content['access_token'];
     }
 
-    public function getAuthToken(): string
+    /**
+     * @return string
+     */
+    private function getAuthToken(): string
     {
-        $appId = getenv('ROUTEE_APP_ID');
-        $appSecret = getenv('ROUTEE_APP_SECRET');
-
-        return base64_encode($appId.':'.$appSecret);
-    }
-
-    public function isExpired()
-    {
-
-    }
-
-    public function sendSMS()
-    {
-        
+        return base64_encode($this->appId.':'.$this->appSecret);
     }
 }
