@@ -1,1 +1,6 @@
 /.idea/
+/vendor/
+/.env
+/var/log/*
+!/var/log/.gitkeep
+/.php_cs.cache

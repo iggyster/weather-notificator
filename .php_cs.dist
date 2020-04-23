@@ -1,0 +1,17 @@
+<?php
+
+$projectPath = __DIR__ . '/src';
+if (!file_exists($projectPath)) {
+    echo 'Source directory is missed or project path is invalid.';
+
+    die(1);
+}
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@PSR2' => true,
+        '@PhpCsFixer' => true,
+        'array_syntax' => ['syntax' => 'short'],
+    ])
+    ->setFinder(PhpCsFixer\Finder::create()->in($projectPath))
+;

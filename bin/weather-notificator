@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+
+<?php
+
+$projectFolder = __DIR__ . '/../';
+
+require $projectFolder.'vendor/autoload.php';
+
+use App\Command\Notify;
+use Dotenv\Dotenv;
+use Symfony\Component\Console\Application;
+
+$dotEnv = Dotenv::createImmutable($projectFolder);
+$dotEnv->load();
+
+$app = new Application('Weather Notificator', '1.0');
+$app->addCommands([
+    new Notify(),
+]);
+
+$app->run();
