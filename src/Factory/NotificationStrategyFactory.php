@@ -17,10 +17,6 @@ class NotificationStrategyFactory
         return new static();
     }
 
-    /**
-     * @param string $type
-     * @return NotificationStrategy
-     */
     public function createStrategy(string $type): NotificationStrategy
     {
         $strategies = [
@@ -30,6 +26,6 @@ class NotificationStrategyFactory
             throw new \LogicException('Seems like you forgot to define a strategy');
         }
 
-        return new $strategies[$type];
+        return new $strategies[$type]();
     }
 }

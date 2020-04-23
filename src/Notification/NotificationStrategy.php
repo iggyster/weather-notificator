@@ -8,8 +8,5 @@ use App\Notification\Messages\NotificationMessage;
 
 interface NotificationStrategy
 {
-    /**
-     * @param NotificationMessage $message
-     */
     public function notify(NotificationMessage $message): void;
 }

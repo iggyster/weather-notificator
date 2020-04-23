@@ -16,9 +16,6 @@ class Weather
      */
     private $map;
 
-    /**
-     * @param string $apiKey
-     */
     public function __construct(string $apiKey)
     {
         $requestFactory = new RequestFactory();
@@ -28,10 +25,6 @@ class Weather
     }
 
     /**
-     * @param Location $location
-     * @param string   $unit
-     *
-     * @return OpenWeatherMap\Util\Temperature
      * @throws WeatherException
      */
     public function getByLocation(Location $location, string $unit = 'metric'): OpenWeatherMap\Util\Temperature

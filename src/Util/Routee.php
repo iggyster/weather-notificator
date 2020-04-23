@@ -29,14 +29,10 @@ class Routee
     private $appSecret;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $token;
 
-    /**
-     * @param string $appId
-     * @param string $appSecret
-     */
     public function __construct(string $appId, string $appSecret)
     {
         $this->client = new Client();
@@ -45,10 +41,6 @@ class Routee
     }
 
     /**
-     * @param string $message
-     * @param string $phoneNumber
-     * @param string $from
-     *
      * @throws RouteeException
      */
     public function sendSMS(string $message, string $phoneNumber, string $from): void
@@ -68,12 +60,12 @@ class Routee
             ]);
         } catch (RequestException $exception) {
             $response = $exception->getResponse();
-            if ($response->getStatusCode() === 400) {
+            if (400 === $response->getStatusCode()) {
                 throw new RouteeException($exception->getMessage());
             }
         }
 
-        if ($response->getStatusCode() !== 200) {
+        if (200 !== $response->getStatusCode()) {
             throw new RouteeException('Failed to send SMS notification');
         }
     }
@@ -88,7 +80,6 @@ class Routee
     }
 
     /**
-     * @param string $authToken
      * @throws RouteeException
      */
     private function initAccessToken(string $authToken): void
@@ -113,9 +104,6 @@ class Routee
         $this->token = $content['access_token'];
     }
 
-    /**
-     * @return string
-     */
     private function getAuthToken(): string
     {
         return base64_encode($this->appId.':'.$this->appSecret);

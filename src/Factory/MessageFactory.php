@@ -17,10 +17,6 @@ class MessageFactory
         return new static();
     }
 
-    /**
-     * @param string $country
-     * @return NotificationMessage
-     */
     public function createMessageForCountry(string $country): NotificationMessage
     {
         $messages = $this->getCountryMessages();
@@ -28,12 +24,9 @@ class MessageFactory
             throw new \LogicException('Seems like you forgot to define message');
         }
 
-        return new $messages[$country];
+        return new $messages[$country]();
     }
 
-    /**
-     * @return array
-     */
     private function getCountryMessages(): array
     {
         return [

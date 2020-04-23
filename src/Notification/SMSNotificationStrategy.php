@@ -22,7 +22,7 @@ class SMSNotificationStrategy implements NotificationStrategy
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      *
      * @throws RouteeException
      */

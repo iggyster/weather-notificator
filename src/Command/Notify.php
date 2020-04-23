@@ -15,12 +15,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Notify extends Command
 {
     /**
-     * @var string|null The default command name
+     * @var null|string The default command name
      */
     protected static $defaultName = 'notify';
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -31,7 +31,7 @@ class Notify extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -56,12 +56,9 @@ class Notify extends Command
         return 1;
     }
 
-    /**
-     * @param string $message
-     */
     private function log(string $message): void
     {
-        $path = __DIR__ . '/../../var/log/notifications.log';
+        $path = __DIR__.'/../../var/log/notifications.log';
 
         file_put_contents($path, date('Y-m-d H:i:s').' '.$message.PHP_EOL, FILE_APPEND);
     }

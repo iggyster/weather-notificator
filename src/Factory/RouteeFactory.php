@@ -8,9 +8,6 @@ use App\Util\Routee;
 
 class RouteeFactory
 {
-    /**
-     * @return Routee
-     */
     public static function create(): Routee
     {
         return new Routee(getenv('ROUTEE_APP_ID'), getenv('ROUTEE_APP_SECRET'));

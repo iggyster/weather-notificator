@@ -22,7 +22,7 @@ class ThessalonikiWeatherMessage extends NotificationMessage
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      *
      * @throws WeatherException
      */

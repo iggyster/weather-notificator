@@ -9,9 +9,6 @@ abstract class NotificationMessage
     private $sender;
     private $receiver;
 
-    /**
-     * @return string
-     */
     abstract public function getMessage(): string;
 
     /**

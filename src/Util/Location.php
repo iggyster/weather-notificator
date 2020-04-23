@@ -12,20 +12,15 @@ class Location
     protected $city;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $state;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $countryCode;
 
-    /**
-     * @param string      $city
-     * @param string|null $state
-     * @param string|null $countryCode
-     */
     public function __construct(string $city, string $state = null, string $countryCode = null)
     {
         $this->city = $city;
