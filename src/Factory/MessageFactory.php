@@ -7,7 +7,7 @@ namespace App\Factory;
 use App\Notification\Messages\NotificationMessage;
 use App\Notification\Messages\ThessalonikiWeatherMessage;
 
-class MessageFactory
+final class MessageFactory
 {
     /**
      * @return static

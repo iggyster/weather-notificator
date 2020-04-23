@@ -7,7 +7,7 @@ namespace App\Factory;
 use App\Notification\NotificationStrategy;
 use App\Notification\SMSNotificationStrategy;
 
-class NotificationStrategyFactory
+final class NotificationStrategyFactory
 {
     /**
      * @return NotificationStrategyFactory

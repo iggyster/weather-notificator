@@ -22,7 +22,7 @@ class Notify extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Send notification');
         $this->addArgument('type', InputArgument::REQUIRED, 'Set the notification type that you want ot send: sms');

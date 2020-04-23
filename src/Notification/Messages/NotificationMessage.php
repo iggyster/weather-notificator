@@ -28,7 +28,7 @@ abstract class NotificationMessage
     }
 
     /**
-     * @param $receiver
+     * @param mixed $receiver
      */
     public function setReceiver($receiver): void
     {
@@ -36,7 +36,7 @@ abstract class NotificationMessage
     }
 
     /**
-     * @param $sender
+     * @param mixed $sender
      */
     public function setSender($sender): void
     {
